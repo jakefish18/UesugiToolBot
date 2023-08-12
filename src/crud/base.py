@@ -35,11 +35,12 @@ class CRUDBase(Generic[ModelType]):
             db.refresh(db_obj)
         return db_objs
 
-    def update(self, db: Session, db_obj: ModelType, **update_data) -> ModelType:
-        pass
+    def update(self, db: Session, db_obj: ModelType) -> ModelType:
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
 
-    def delete(self, db: Session, id: int) -> ModelType:
-        obj = db.query(self.model).get(id)
+    def delete(self, db: Session, id: int) -> None:
+        obj = db.query(self.Model).get(id)
         db.delete(obj)
         db.commit()
-        return obj

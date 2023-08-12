@@ -24,10 +24,11 @@ ADD_LEARNING_COLLECTION_ERROR_1 = (
     "Ошибка! Вы уже добавляли коллекцию для тренировок с таким названием, выберете другое."
 )
 ADD_LEARNING_COLLECTION_RESPONSE_2 = (
-    "Успешно! Теперь отправьте JSON-файл, где в качестве ключа содержатся ответы, " "а ответы являются их значениями:"
+    "✅ Успешно! Теперь отправьте JSON-файл, где в качестве ключа содержатся ответы, " "а ответы являются их значениями:"
 )
 ADD_LEARNING_COLLECTION_ERROR_2 = "Ошибка! Файл повреждён или не соответствует требованиям."
-ADD_LEARNING_COLLECTION_RESPONSE_3 = "Успешно! Тренировка добавлена."
+ADD_LEARNING_COLLECTION_RESPONSE_3 = "✅ Успешно! Тренировка добавлена."
+ADD_LEARNING_COLLECTION_ERROR_3 = "Ошибка! Количество карт должно быть больше или равно 4."
 
 
 async def add_learning_collection_st1(query: types.CallbackQuery):
@@ -103,6 +104,12 @@ async def add_learning_collection_st3(message: types.message, state: FSMContext)
             learning_collection_id=learning_collection_id, question=learning_card_question, answer=learning_card_answer
         )
         learning_collection_cards.append(learning_card)
+
+    if len(learning_collection_cards) < 4:
+        await state.finish()
+        await bot.send_message(user_telegram_id, ADD_LEARNING_COLLECTION_ERROR_3)
+        db.close()
+        return
 
     crud_learning_card.create_many(db, learning_collection_cards)
 

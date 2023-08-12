@@ -14,5 +14,5 @@ class User(Base):
     telegram_id = Column(BigInteger, unique=True, index=True)
     registered_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    learning_session = relationship("LearningSession", back_populates="user")
+    learning_session = relationship("LearningSession", back_populates="user", uselist=False)
     learning_collections = relationship("LearningCollection", back_populates="owner")

@@ -1,5 +1,4 @@
 import random
-from typing import List
 
 from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -26,10 +25,12 @@ class LearningSessionForm(StatesGroup):
 RUN_LEARNING_SESSION_ERROR_1 = "Ошибка! У вас ещё нет добавленных тренировок."
 RUN_LEARNING_SESSION_RESPONSE_1 = "Чтобы начать тренировку, выберите её:"
 RUN_LEARNING_SESSION_ERROR_2 = "Ошибка! У вас нет такой тренировки."
+RUN_LEARNING_SESSION_ERROR_3 = "Неправильный ответ :("
+RUN_LEARNING_SESSION_RESPONSE_3 = "Успешно. Вы прошли всю тренировку!!! :)"
 
 
 # Supporting functions.
-def list_transformation(x: str) -> List:
+def list_transformation(x: str) -> list[str]:
     """Returning list with single object x."""
     return [x]
 
@@ -45,7 +46,7 @@ async def run_learning_session_st1(message: types.message):
     user: User = crud_user.get_by_telegram_id(db, user_telegram_id)
 
     # Creating reply keyboard with user learning collections.
-    learning_collection_names: List[str] = [
+    learning_collection_names: list[str] = [
         learning_collection.name for learning_collection in user.learning_collections
     ]
 
@@ -84,52 +85,87 @@ async def run_learning_session_st2(message: types.message, state: FSMContext):
         await bot.send_message(user_telegram_id, RUN_LEARNING_SESSION_ERROR_2, reply_markup=kbm_main_menu)
         return
 
+    # Deleting past sessions if it exists.
+    past_learning_session = crud_learning_session.get_user_session(db, user)
+    crud_learning_session.delete(db, past_learning_session.id)
+
     # Setting up learning session.
     learning_session = LearningSession(user_id=user.id, learning_collection_id=learning_collection.id)
     learning_session = crud_learning_session.create(db, learning_session)
     user = crud_user.set_learning_session(db, user, learning_session)
     learning_collection_card_ids = [card.id for card in learning_collection.cards]
-    crud_learning_session.create()
+    crud_learning_session.create(db, learning_session)
 
     learning_session_cards: list[LearningSessionCard] = []
     for card_id in learning_collection_card_ids:
         learning_session_card = LearningSessionCard(learning_session_id=learning_session.id, card_id=card_id)
         learning_session_cards.append(learning_session_card)
 
-    crud_learning_session.create_many(learning_session_cards)
+    crud_learning_session.create_many(db, learning_session_cards)
 
     db.close()
 
-    await continue_learning_session(message, state)
+    await continue_learning_session(message, state, first_question=True)
 
 
-async def continue_learning_session(message: types.message, state: FSMContext):
+async def continue_learning_session(message: types.message, state: FSMContext, first_question=False):
     """Sending questions before user fails."""
     db = SessionLocal()
 
     user_telegram_id = message.from_user.id
     user = crud_user.get_by_telegram_id(db, user_telegram_id)
 
-    # Get question.
-    random_cards = [
-        learning_session_card.card for learning_session_card in random.sample(user.learning_session.cards, 4)
-    ]
-    answer_card = random_cards[0]
-    other_cards = random_cards[1:]
+    # Checking past answer.
+    if not first_question:
+        async with state.proxy() as answer:
+            if answer["answer"] != message.text:
+                await state.finish()
+                await bot.send_message(user_telegram_id, RUN_LEARNING_SESSION_ERROR_3, reply_markup=kbm_main_menu)
+                return
 
-    card_question = answer_card.question
+            answer_card_id = answer["answer_card_id"]
+
+            print(answer_card_id)
+            # Setting past answer to passed.
+            passed_card = crud_learning_session_card.get(db, answer_card_id)
+            print(passed_card.is_passed)
+            print(passed_card.learning_session_id)
+            passed_card.is_passed = True
+            passed_card = crud_learning_session_card.update(db, passed_card)
+
+    # Get user learning session.
+    learning_session = crud_learning_session.get_user_session(db, user)
+
+    # Get question.
+    answer_card = crud_learning_session_card.get_answer_card(db, learning_session)
+
+    if not answer_card:
+        await state.finish()
+        await bot.send_message(user_telegram_id, RUN_LEARNING_SESSION_RESPONSE_3, reply_markup=kbm_main_menu)
+        return
+
+    other_cards = crud_learning_session_card.get_extra_cards(db, answer_card, learning_session, 3)
+
+    card_question = answer_card.card.question
+
+    # Saving answer.
+    async with state.proxy() as answer:
+        answer["answer_card_id"] = answer_card.id
+        answer["answer"] = answer_card.card.answer
+        answer.update()
 
     # Answer option must contain list of lists to generate keyboard correctly.
-    answer_options = [[answer_card.answer]]
+    answer_options = [[answer_card.card.answer]]
 
     for other_card in other_cards:
-        answer_options.append([other_card.answer])
+        answer_options.append([other_card.card.answer])
 
     random.shuffle(answer_options)
 
     kbm_answers = reply_kbm.generate(answer_options)
 
     await bot.send_message(user_telegram_id, card_question, reply_markup=kbm_answers)
+    await LearningSessionForm.session.set()
 
     db.close()
 

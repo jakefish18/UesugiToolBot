@@ -1,5 +1,5 @@
 """Learning session SQLAlchemy model."""
-from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy import Boolean, Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from src.db import Base
@@ -11,9 +11,10 @@ class LearningSession(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), index=True, unique=True)
     learning_collection_id = Column(Integer, ForeignKey("learning_collections.id"))
+    is_active = Column(Boolean, default=True)
 
-    user = relationship("User", back_populates="learning_session", foreign_keys=[user_id])
+    user = relationship("User", back_populates="learning_session", foreign_keys=[user_id], uselist=False)
     learning_collection = relationship(
-        "LearningCollection", back_populates="learning_sessions", foreign_keys=[learning_collection_id]
+        "LearningCollection", back_populates="learning_sessions", foreign_keys=[learning_collection_id], uselist=False
     )
     cards = relationship("LearningSessionCard", back_populates="learning_session")

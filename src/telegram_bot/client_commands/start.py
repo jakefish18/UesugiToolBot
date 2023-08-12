@@ -19,6 +19,11 @@ async def start(message: types.message):
     db = SessionLocal()
 
     user_telegram_id = message.from_user.id
+    if crud_user.get_by_telegram_id(db, user_telegram_id):
+        db.close()
+        await bot.send_message(user_telegram_id, START_COMMAND_RESPONSE, reply_markup=kbm_main_menu)
+        return
+
     user = User(telegram_id=user_telegram_id)
     user = crud_user.create(db, user)
     await bot.send_message(user.telegram_id, START_COMMAND_RESPONSE, reply_markup=kbm_main_menu)
