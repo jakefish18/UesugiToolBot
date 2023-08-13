@@ -15,7 +15,7 @@ class DelCollectionForm(StatesGroup):
     name = State()
 
 
-DEL_LEARNING_COLLECTION_ERROR_1 = "Ошибка! У вас ещё нет добавленных тренировок."
+DEL_LEARNING_COLLECTION_ERROR_1 = 'Ошибка! У вас ещё нет добавленных тренировок. Чтобы узнать, как добавлять тренировки, нажмите на кнопку "Информация"'
 DEL_LEARNING_COLLECTION_RESPONSE_1 = "Выберите из списка тренировку, которую хотите удалить:"
 DEL_LEARNING_COLLECTION_ERROR_2 = "Ошибка! У ваc нет тренировки под таким названием."
 DEL_LEARNING_COLLECTION_RESPONSE_2 = "✅ Успешно! Удалено."

@@ -11,7 +11,7 @@ class LearningCollection(Base):
     __tablename__ = "learning_collections"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True, unique=True)
+    name = Column(String, index=True)
     owner_id = Column(BigInteger, ForeignKey("users.id"), index=True)
     added_at = Column(DateTime, default=datetime.datetime.utcnow)
 

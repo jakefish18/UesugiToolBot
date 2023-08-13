@@ -107,14 +107,14 @@ async def add_learning_collection_st3(message: types.message, state: FSMContext)
 
     if len(learning_collection_cards) < 4:
         await state.finish()
-        await bot.send_message(user_telegram_id, ADD_LEARNING_COLLECTION_ERROR_3)
+        await bot.send_message(user_telegram_id, ADD_LEARNING_COLLECTION_ERROR_3, reply_markup=kbm_main_menu)
         db.close()
         return
 
     crud_learning_card.create_many(db, learning_collection_cards)
 
     await state.finish()
-    await bot.send_message(user_telegram_id, ADD_LEARNING_COLLECTION_RESPONSE_3)
+    await bot.send_message(user_telegram_id, ADD_LEARNING_COLLECTION_RESPONSE_3, reply_markup=kbm_main_menu)
 
     db.close()
 

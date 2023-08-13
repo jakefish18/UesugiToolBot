@@ -87,7 +87,9 @@ async def run_learning_session_st2(message: types.message, state: FSMContext):
 
     # Deleting past sessions if it exists.
     past_learning_session = crud_learning_session.get_user_session(db, user)
-    crud_learning_session.delete(db, past_learning_session.id)
+
+    if past_learning_session:
+        crud_learning_session.delete(db, past_learning_session.id)
 
     # Setting up learning session.
     learning_session = LearningSession(user_id=user.id, learning_collection_id=learning_collection.id)
@@ -120,16 +122,20 @@ async def continue_learning_session(message: types.message, state: FSMContext, f
         async with state.proxy() as answer:
             if answer["answer"] != message.text:
                 await state.finish()
-                await bot.send_message(user_telegram_id, RUN_LEARNING_SESSION_ERROR_3, reply_markup=kbm_main_menu)
+                await bot.send_message(
+                    user_telegram_id,
+                    f'Вопрос: {answer["question"]}\n'
+                    + f'Правильный ответ: {answer["answer"]}\n'
+                    + f"Ваш ответ: {message.text}\n"
+                    + RUN_LEARNING_SESSION_ERROR_3,
+                    reply_markup=kbm_main_menu,
+                )
                 return
 
             answer_card_id = answer["answer_card_id"]
 
-            print(answer_card_id)
             # Setting past answer to passed.
             passed_card = crud_learning_session_card.get(db, answer_card_id)
-            print(passed_card.is_passed)
-            print(passed_card.learning_session_id)
             passed_card.is_passed = True
             passed_card = crud_learning_session_card.update(db, passed_card)
 
@@ -151,6 +157,7 @@ async def continue_learning_session(message: types.message, state: FSMContext, f
     # Saving answer.
     async with state.proxy() as answer:
         answer["answer_card_id"] = answer_card.id
+        answer["question"] = answer_card.card.question
         answer["answer"] = answer_card.card.answer
         answer.update()
 
