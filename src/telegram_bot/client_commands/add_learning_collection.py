@@ -28,7 +28,8 @@ ADD_LEARNING_COLLECTION_RESPONSE_2 = (
 )
 ADD_LEARNING_COLLECTION_ERROR_2 = "Ошибка! Файл повреждён или не соответствует требованиям."
 ADD_LEARNING_COLLECTION_RESPONSE_3 = "✅ Успешно! Тренировка добавлена."
-ADD_LEARNING_COLLECTION_ERROR_3 = "Ошибка! Количество карт должно быть больше или равно 4."
+ADD_LEARNING_COLLECTION_ERROR_3_1 = "Ошибка! Неправильный формат файла. Проверьте, является ли он json файлом, имеет ли он запятые, а также правильность кавычек :)"
+ADD_LEARNING_COLLECTION_ERROR_3_2 = "Ошибка! Количество карт должно быть больше или равно 4."
 
 
 async def add_learning_collection_st1(query: types.CallbackQuery):
@@ -89,9 +90,16 @@ async def add_learning_collection_st3(message: types.message, state: FSMContext)
     learning_collection_file_id = message.document.file_id
     learning_collection_file = await bot.get_file(learning_collection_file_id)
     path_to_save_learning_collection_file = f"user_files/{user_telegram_id}.json"
-    await bot.download_file(learning_collection_file.file_path, path_to_save_learning_collection_file)
-    with open(path_to_save_learning_collection_file, "r", encoding="UTF-8") as learning_collection_file:
-        learning_collection = json.load(learning_collection_file)
+
+    try:  # If user has sended not json.
+        await bot.download_file(learning_collection_file.file_path, path_to_save_learning_collection_file)
+        with open(path_to_save_learning_collection_file, "r", encoding="UTF-8") as learning_collection_file:
+            learning_collection = json.load(learning_collection_file)
+
+    except:
+        await state.finish()
+        await bot.send_message(user_telegram_id, ADD_LEARNING_COLLECTION_ERROR_3_1, reply_markup=kbm_main_menu)
+        return
 
     # Getting learning collection id.
     async with state.proxy() as learning_collection_info:
@@ -107,7 +115,7 @@ async def add_learning_collection_st3(message: types.message, state: FSMContext)
 
     if len(learning_collection_cards) < 4:
         await state.finish()
-        await bot.send_message(user_telegram_id, ADD_LEARNING_COLLECTION_ERROR_3, reply_markup=kbm_main_menu)
+        await bot.send_message(user_telegram_id, ADD_LEARNING_COLLECTION_ERROR_3_2, reply_markup=kbm_main_menu)
         db.close()
         return
 
