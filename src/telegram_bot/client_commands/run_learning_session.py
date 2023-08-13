@@ -105,6 +105,12 @@ async def run_learning_session_st2(message: types.message, state: FSMContext):
 
     crud_learning_session.create_many(db, learning_session_cards)
 
+    # Preparing data for learning session.
+    async with state.proxy() as answer:
+        answer["answered_count"] = 0
+        answer["choosen_training"] = learning_collection.name
+        answer["total_count_of_cards"] = len(learning_collection.cards)
+
     db.close()
 
     await continue_learning_session(message, state, first_question=True)
@@ -122,9 +128,12 @@ async def continue_learning_session(message: types.message, state: FSMContext, f
         async with state.proxy() as answer:
             if answer["answer"] != message.text:
                 await state.finish()
+                answered_count = answer["answered_count"]
+                total_count_of_cards = answer["total_count_of_cards"]
                 await bot.send_message(
                     user_telegram_id,
-                    f'Вопрос: {answer["question"]}\n'
+                    f"Сделано: {answered_count}/{total_count_of_cards}\n"
+                    + f'Вопрос: {answer["question"]}\n'
                     + f'Правильный ответ: {answer["answer"]}\n'
                     + f"Ваш ответ: {message.text}\n"
                     + RUN_LEARNING_SESSION_ERROR_3,
@@ -138,6 +147,9 @@ async def continue_learning_session(message: types.message, state: FSMContext, f
             passed_card = crud_learning_session_card.get(db, answer_card_id)
             passed_card.is_passed = True
             passed_card = crud_learning_session_card.update(db, passed_card)
+
+            # Saving answered count for session.
+            answer["answered_count"] += 1
 
     # Get user learning session.
     learning_session = crud_learning_session.get_user_session(db, user)
