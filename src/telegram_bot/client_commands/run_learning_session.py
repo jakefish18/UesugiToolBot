@@ -27,6 +27,7 @@ RUN_LEARNING_SESSION_RESPONSE_1 = "Чтобы начать тренировку,
 RUN_LEARNING_SESSION_ERROR_2 = "Ошибка! У вас нет такой тренировки."
 RUN_LEARNING_SESSION_ERROR_3 = "Неправильный ответ :("
 RUN_LEARNING_SESSION_RESPONSE_3 = "Успешно. Вы прошли всю тренировку!!! :)"
+RUN_LEARNING_SESSION_RESPONSE_4 = "✅Верно!"
 
 
 # Supporting functions.
@@ -140,6 +141,8 @@ async def continue_learning_session(message: types.message, state: FSMContext, f
                     reply_markup=kbm_main_menu,
                 )
                 return
+
+            await bot.send_message(user_telegram_id, RUN_LEARNING_SESSION_RESPONSE_4)
 
             answer_card_id = answer["answer_card_id"]
 
