@@ -14,7 +14,12 @@ from src.crud import (
 from src.db import SessionLocal
 from src.models import LearningSession, LearningSessionCard, User
 from src.telegram_bot.init import bot
-from src.telegram_bot.keyboard_markups import kbm_main_menu, reply_kbm
+from src.telegram_bot.keyboard_markups import (
+    kbm_learning_collections,
+    kbm_main_menu,
+    reply_kbm,
+)
+from src.utils import LearningCollectionName
 
 
 class LearningSessionForm(StatesGroup):
@@ -30,12 +35,6 @@ RUN_LEARNING_SESSION_RESPONSE_3 = "Успешно. Вы прошли всю тр
 RUN_LEARNING_SESSION_RESPONSE_4 = "✅Верно!"
 
 
-# Supporting functions.
-def list_transformation(x: str) -> list[str]:
-    """Returning list with single object x."""
-    return [x]
-
-
 # Command functions.
 async def run_learning_session_st1(message: types.message):
     """
@@ -46,18 +45,14 @@ async def run_learning_session_st1(message: types.message):
     user_telegram_id = message.from_user.id
     user: User = crud_user.get_by_telegram_id(db, user_telegram_id)
 
-    # Creating reply keyboard with user learning collections.
-    learning_collection_names: list[str] = [
-        learning_collection.name for learning_collection in user.learning_collections
-    ]
-
     # Error if user hasn't added learning collections.
-    if len(learning_collection_names) == 0:
+    if len(user.learning_collections) == 0:
         await bot.send_message(user_telegram_id, RUN_LEARNING_SESSION_ERROR_1, reply_markup=kbm_main_menu)
+        db.close()
         return
 
-    learning_collection_names_layout = list(map(list_transformation, learning_collection_names))
-    kbm_learning_collection_names = reply_kbm.generate(learning_collection_names_layout)
+    # Creating reply keyboard with user learning collections.
+    kbm_learning_collection_names = kbm_learning_collections.generate(user)
 
     await LearningSessionForm.name.set()
     await bot.send_message(
@@ -75,10 +70,18 @@ async def run_learning_session_st2(message: types.message, state: FSMContext):
     db = SessionLocal()
 
     user_telegram_id = message.from_user.id
-    learning_collection_name = message.text
+    learning_collection_name = LearningCollectionName(message.text)
 
     user = crud_user.get_by_telegram_id(db, user_telegram_id)
-    learning_collection = crud_learning_collection.get_by_name(db, user, learning_collection_name)
+
+    # Two types of learning collections: from market, made by own.
+    if learning_collection_name.author:
+        learning_collection = crud_learning_collection.get_by_name_and_author_id(
+            db, learning_collection_name.name, learning_collection_name.author
+        )
+
+    else:
+        learning_collection = crud_learning_collection.get_by_name(db, user, learning_collection_name.name)
 
     # Error if user has entered unknown learning collection.
     if not learning_collection:

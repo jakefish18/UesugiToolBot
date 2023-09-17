@@ -11,7 +11,7 @@ class LearningCard(Base):
     __tablename__ = "learning_cards"
 
     id = Column(Integer, primary_key=True, index=True)
-    learning_collection_id = Column(Integer, ForeignKey("learning_collections.id"))
+    learning_collection_id = Column(Integer, ForeignKey("learning_collections.id", ondelete="CASCADE"))
     question = Column(String)
     answer = Column(String)
     added_at = Column(DateTime, default=datetime.datetime.utcnow)

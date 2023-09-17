@@ -12,7 +12,9 @@ from src.telegram_bot.client_commands import (
     register_info_command,
     register_list_learning_collections_command,
     register_menu_command,
+    register_publish_learning_collection_command,
     register_run_learning_session_command,
+    register_search_learning_collection_command,
     register_start_command,
 )
 from src.telegram_bot.init import bot_dispatcher
@@ -30,6 +32,8 @@ async def on_startup(bot_dispatcher: Dispatcher):
     register_info_command(bot_dispatcher)
     register_list_learning_collections_command(bot_dispatcher)
     register_menu_command(bot_dispatcher)
+    register_publish_learning_collection_command(bot_dispatcher)
+    register_search_learning_collection_command(bot_dispatcher)
 
 
 def run_bot():

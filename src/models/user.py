@@ -15,4 +15,5 @@ class User(Base):
     registered_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     learning_session = relationship("LearningSession", back_populates="user", uselist=False)
-    learning_collections = relationship("LearningCollection", back_populates="owner")
+    learning_collections = relationship("UserLearningCollection", back_populates="user")
+    owned_learning_collections = relationship("LearningCollection", back_populates="owner")

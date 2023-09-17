@@ -10,7 +10,11 @@ from src.telegram_bot.client_commands.list_learning_collections import (
     register_list_learning_collections_command,
 )
 from src.telegram_bot.client_commands.menu import register_menu_command
+from src.telegram_bot.client_commands.publish_learning_collection import (
+    register_publish_learning_collection_command,
+)
 from src.telegram_bot.client_commands.run_learning_session import (
     register_run_learning_session_command,
 )
 from src.telegram_bot.client_commands.start import register_start_command
+from src.telegram_bot.client_commands.search_learning_collection import register_search_learning_collection_command

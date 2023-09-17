@@ -18,7 +18,9 @@ async def list_learning_collections(query: types.CallbackQuery):
 
     user_telegram_id = query.from_user.id
     user = crud_user.get_by_telegram_id(db, user_telegram_id)
-    user_learning_collection_names = [learning_collection.name for learning_collection in user.learning_collections]
+    user_learning_collection_names = [
+        user_learning_collection.learning_collection.name for user_learning_collection in user.learning_collections
+    ]
 
     response_message = "\n".join(user_learning_collection_names)
 
