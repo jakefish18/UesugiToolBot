@@ -17,3 +17,4 @@ class User(Base):
     learning_session = relationship("LearningSession", back_populates="user", uselist=False)
     learning_collections = relationship("UserLearningCollection", back_populates="user")
     owned_learning_collections = relationship("LearningCollection", back_populates="owner")
+    access_token = relationship("AccessToken", back_populates="user", uselist=False)

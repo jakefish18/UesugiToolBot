@@ -10,5 +10,5 @@ from src.models import LearningCard, UserLearningCollection
 
 
 class CRUDUserLearningCollection(CRUDBase[UserLearningCollection]):
-    def __init__(self, Model: type[LearningCard]):
+    def __init__(self, Model: type[UserLearningCollection]):
         super().__init__(Model)

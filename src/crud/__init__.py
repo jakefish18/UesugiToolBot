@@ -1,4 +1,5 @@
 from src.models import (
+    AccessToken,
     LearningCard,
     LearningCollection,
     LearningSession,
@@ -7,6 +8,8 @@ from src.models import (
     UserLearningCollection,
 )
 
+from .crud_access_token import CRUDAcessToken
+from .crud_auth_token import CRUDAuthToken
 from .crud_learning_card import CRUDLearningCard
 from .crud_learning_collection import CRUDLearningCollection
 from .crud_learning_session import CRUDLearningSession
@@ -20,3 +23,5 @@ crud_learning_session = CRUDLearningSession(LearningSession)
 crud_learning_session_card = CRUDLearningSessionCard(LearningSessionCard)
 crud_user = CRUDUser(User)
 crud_user_learning_collection = CRUDUserLearningCollection(UserLearningCollection)
+crud_access_token = CRUDAcessToken(AccessToken)
+crud_auth_token = CRUDAuthToken()
