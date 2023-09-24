@@ -7,6 +7,6 @@ main_menu_layout = [
         ["🗂Вывести список тренировок", "list_learning_collections"],
         ["🌐Опубликовать тренировку", "publish_learning_collection"],
     ],
-    [["Искать тренировку", "search_learning_collection"]],
+    [["UTBotHelper", "get_auth_token"]],
 ]
 kbm_main_menu = inline_kbm.generate(main_menu_layout)

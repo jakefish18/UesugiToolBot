@@ -50,3 +50,5 @@ async def auth_func(
     access_token: AccessToken = crud_access_token.create(db, access_token)
     response.set_cookie("access_token", access_token.token)
     return {"access_token": access_token.token}
+
+

@@ -19,7 +19,7 @@ def create_token() -> str:
     Returning:
         token: str - generated token.
     """
-    token = secrets.token_hex(settings.TOKEN_LENGHT_IN_BYTES)
+    token = secrets.token_hex(settings.ACCESS_TOKEN_LENGHT_IN_BYTES)
     return token
 
 

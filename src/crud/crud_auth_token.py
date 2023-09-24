@@ -1,14 +1,16 @@
 from typing import Union
 
 from redis import Redis
+
 from src.core import settings
+from src.models import User
 
 
 class CRUDAuthToken:
     def __init__(self) -> None:
         pass
 
-    def create(self, redis: Redis, user_id: int, token: str) -> str:
+    def create(self, redis: Redis, user: User, token: str) -> str:
         """
         Creating email confirm token in redis database.
 
@@ -19,7 +21,7 @@ class CRUDAuthToken:
         Returns:
             auth_token: str - the same value as passed token.
         """
-        redis.set(token, user_id, ex=settings.AUTH_TOKEN_EXPIRING_TIME)
+        redis.set(token, user.id, ex=settings.AUTH_TOKEN_EXPIRING_TIME)
         return token
 
     def verify(self, redis: Redis, auth_token: str) -> Union[int, None]:

@@ -45,8 +45,8 @@ def get_redis() -> Generator:
     """
     try:
         print("GETTING")
-        redis: Redis = cache_db.connection.open()
-        return redis
+        redis: Redis = cache_db.open()
+        yield redis
     finally:
         redis.close()
 
@@ -64,7 +64,7 @@ def get_current_user(access_token: Annotated[str, Cookie()], db: Session = Depen
         user: models.User - user sqlalchemy model.
         HTTPExecption(401) if invalid access token.
     """
-    access_token_data: AccessToken = crud_access_token.get_by_access_token(db, access_token)
+    access_token_data: AccessToken = crud_access_token.get_by_token(db, access_token)
 
     if not access_token_data:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Invalid access token.")
@@ -75,9 +75,3 @@ def get_current_user(access_token: Annotated[str, Cookie()], db: Session = Depen
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid credentials")
 
     return user
-
-
-print("DEPENDENCIES ARE INITILIZED")
-# redis = get_redis()
-# print(type(redis))
-# redis.set()

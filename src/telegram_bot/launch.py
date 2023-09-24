@@ -9,6 +9,7 @@ from src.telegram_bot.client_commands import (
     register_add_learning_collection_command,
     register_cancel_command,
     register_del_learning_collection_command,
+    register_get_auth_token_command,
     register_info_command,
     register_list_learning_collections_command,
     register_menu_command,
@@ -34,6 +35,7 @@ async def on_startup(bot_dispatcher: Dispatcher):
     register_menu_command(bot_dispatcher)
     register_publish_learning_collection_command(bot_dispatcher)
     register_search_learning_collection_command(bot_dispatcher)
+    register_get_auth_token_command(bot_dispatcher)
 
 
 def run_bot():
