@@ -4,16 +4,16 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.storage import FSMContext
 
-from src.crud import (
+from crud import (
     crud_learning_card,
     crud_learning_collection,
     crud_user,
     crud_user_learning_collection,
 )
-from src.db import SessionLocal
-from src.models import LearningCard, LearningCollection, User, UserLearningCollection
-from src.telegram_bot.init import bot
-from src.telegram_bot.keyboard_markups import kbm_main_menu
+from db import SessionLocal
+from models import LearningCard, LearningCollection, User, UserLearningCollection
+from telegram_bot.init import bot
+from telegram_bot.keyboard_markups import kbm_main_menu
 
 
 class LearningCollectionForm(StatesGroup):

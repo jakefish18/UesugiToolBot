@@ -1,7 +1,7 @@
 """Redis database connection."""
 
 from redis import Redis
-from src.core import settings
+from core import settings
 
 
 def open() -> Redis:

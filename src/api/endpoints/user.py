@@ -8,9 +8,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from redis import Redis
 from sqlalchemy.orm import Session
 
-from src.core import security
-from src.crud import crud_access_token, crud_auth_token, crud_user
-from src.models import AccessToken
+from core import security
+from crud import crud_access_token, crud_auth_token, crud_user
+from models import AccessToken
 
 from .. import dependencies
 

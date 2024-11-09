@@ -12,7 +12,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from src.db import Base
+from db import Base
 
 
 class UserLearningCollection(Base):

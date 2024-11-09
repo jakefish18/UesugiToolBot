@@ -4,7 +4,7 @@ import datetime
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
-from src.db import Base
+from db import Base
 
 
 class LearningSession(Base):

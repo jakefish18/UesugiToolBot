@@ -2,9 +2,9 @@
 User learning collections reply markup.
 """
 
-from src.models import User
-from src.telegram_bot.keyboard_markups import reply_kbm
-from src.utils import LearningCollectionName, list_transformation
+from models import User
+from telegram_bot.keyboard_markups import reply_kbm
+from utils import LearningCollectionName, list_transformation
 
 
 def generate(user: User):

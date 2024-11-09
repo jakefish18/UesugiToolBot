@@ -1,3 +1,8 @@
+import sys
+import os
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, project_root)
+
 from logging.config import fileConfig
 
 from alembic import context
@@ -13,14 +18,14 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Setting sqlalchemy.url from settings.
-from src.core import settings
+from core import settings
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URI)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymode
-import src.models
-from src.db import Base
+import models
+from db import Base
 
 target_metadata = Base.metadata
 

@@ -8,10 +8,10 @@ from fastapi import Cookie, Depends, HTTPException, status
 from redis import Redis
 from sqlalchemy.orm import Session
 
-from src import cache_db
-from src.crud import crud_access_token, crud_user
-from src.db import SessionLocal
-from src.models import AccessToken, User
+import cache_db
+from crud import crud_access_token, crud_user
+from db import SessionLocal
+from models import AccessToken, User
 
 
 def get_db() -> Generator:

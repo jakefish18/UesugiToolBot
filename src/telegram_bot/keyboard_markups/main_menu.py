@@ -1,4 +1,4 @@
-from src.telegram_bot.keyboard_markups import inline_kbm
+from telegram_bot.keyboard_markups import inline_kbm
 
 main_menu_layout = [
     [["ℹ️Информация", "info"], ["🧠 Запустить тренировку", "run_learning_session"]],

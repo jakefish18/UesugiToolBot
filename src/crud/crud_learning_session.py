@@ -6,8 +6,8 @@ from typing import Type, Union
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
-from src.crud.base import CRUDBase
-from src.models import LearningSession, User
+from crud.base import CRUDBase
+from models import LearningSession, User
 
 
 class CRUDLearningSession(CRUDBase[LearningSession]):

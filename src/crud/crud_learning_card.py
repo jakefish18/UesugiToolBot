@@ -5,8 +5,8 @@ from typing import Type, Union
 
 from sqlalchemy.orm import Session
 
-from src.crud.base import CRUDBase
-from src.models import LearningCard
+from crud.base import CRUDBase
+from models import LearningCard
 
 
 class CRUDLearningCard(CRUDBase[LearningCard]):

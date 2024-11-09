@@ -4,7 +4,7 @@ import datetime
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from src.db import Base
+from db import Base
 
 
 class LearningCard(Base):

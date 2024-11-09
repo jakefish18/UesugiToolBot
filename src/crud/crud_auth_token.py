@@ -2,8 +2,8 @@ from typing import Union
 
 from redis import Redis
 
-from src.core import settings
-from src.models import User
+from core import settings
+from models import User
 
 
 class CRUDAuthToken:

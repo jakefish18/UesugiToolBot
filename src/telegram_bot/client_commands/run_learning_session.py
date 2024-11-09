@@ -5,21 +5,21 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.storage import FSMContext
 from aiogram.utils.callback_data import CallbackData
 
-from src.crud import (
+from crud import (
     crud_learning_collection,
     crud_learning_session,
     crud_learning_session_card,
     crud_user,
 )
-from src.db import SessionLocal
-from src.models import LearningSession, LearningSessionCard, User
-from src.telegram_bot.init import bot
-from src.telegram_bot.keyboard_markups import (
+from db import SessionLocal
+from models import LearningSession, LearningSessionCard, User
+from telegram_bot.init import bot
+from telegram_bot.keyboard_markups import (
     kbm_learning_collections,
     kbm_main_menu,
     reply_kbm,
 )
-from src.utils import LearningCollectionName
+from utils import LearningCollectionName
 
 
 class LearningSessionForm(StatesGroup):

@@ -2,12 +2,12 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.storage import FSMContext
 
-from src import cache_db
-from src.core import security
-from src.crud import crud_auth_token, crud_user
-from src.db import SessionLocal
-from src.telegram_bot.init import bot
-from src.telegram_bot.keyboard_markups import kbm_main_menu
+import cache_db
+from core import security
+from crud import crud_auth_token, crud_user
+from db import SessionLocal
+from telegram_bot.init import bot
+from telegram_bot.keyboard_markups import kbm_main_menu
 
 
 class Form(StatesGroup):

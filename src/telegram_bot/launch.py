@@ -5,7 +5,7 @@ Importing all bot functions from files and bot launching.
 from aiogram import Dispatcher
 from aiogram.utils import executor
 
-from src.telegram_bot.client_commands import (
+from telegram_bot.client_commands import (
     register_add_learning_collection_command,
     register_cancel_command,
     register_del_learning_collection_command,
@@ -18,7 +18,7 @@ from src.telegram_bot.client_commands import (
     register_search_learning_collection_command,
     register_start_command,
 )
-from src.telegram_bot.init import bot_dispatcher
+from telegram_bot.init import bot_dispatcher
 
 
 async def on_startup(bot_dispatcher: Dispatcher):

@@ -1,10 +1,10 @@
 from aiogram import Dispatcher, types
 
-from src.crud import crud_user
-from src.db import SessionLocal
-from src.models import User
-from src.telegram_bot.init import bot
-from src.telegram_bot.keyboard_markups import kbm_main_menu
+from crud import crud_user
+from db import SessionLocal
+from models import User
+from telegram_bot.init import bot
+from telegram_bot.keyboard_markups import kbm_main_menu
 
 LIST_LEARNING_COLLECTION_ERROR_1 = "Ошибка! У вас нет добавленных тренировок!"
 

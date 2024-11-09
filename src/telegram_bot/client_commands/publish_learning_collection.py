@@ -2,10 +2,10 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.storage import FSMContext
 
-from src.crud import crud_learning_collection, crud_user
-from src.db import SessionLocal
-from src.telegram_bot.init import bot
-from src.telegram_bot.keyboard_markups import (
+from crud import crud_learning_collection, crud_user
+from db import SessionLocal
+from telegram_bot.init import bot
+from telegram_bot.keyboard_markups import (
     kbm_learning_collections,
     kbm_main_menu,
     kbm_y_or_n,

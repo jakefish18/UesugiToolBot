@@ -1,4 +1,4 @@
-from src.models import (
+from models import (
     AccessToken,
     LearningCard,
     LearningCollection,

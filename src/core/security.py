@@ -6,7 +6,7 @@ import secrets
 
 import bcrypt
 
-from src.core import settings
+from core import settings
 
 
 def create_token() -> str:

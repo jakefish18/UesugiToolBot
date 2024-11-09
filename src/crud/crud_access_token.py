@@ -3,8 +3,8 @@ CRUD requests for access tokens.
 """
 from sqlalchemy.orm import Session
 
-from src.crud.base import CRUDBase
-from src.models import AccessToken
+from crud.base import CRUDBase
+from models import AccessToken
 
 
 class CRUDAcessToken(CRUDBase[AccessToken]):

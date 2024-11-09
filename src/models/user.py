@@ -4,7 +4,7 @@ import datetime
 from sqlalchemy import BigInteger, Column, DateTime, Integer
 from sqlalchemy.orm import relationship
 
-from src.db import Base
+from db import Base
 
 
 class User(Base):

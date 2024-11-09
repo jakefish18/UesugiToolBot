@@ -7,8 +7,8 @@ from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import func
 
-from src.crud.base import CRUDBase
-from src.models import LearningSession, LearningSessionCard
+from crud.base import CRUDBase
+from models import LearningSession, LearningSessionCard
 
 
 class CRUDLearningSessionCard(CRUDBase[LearningSessionCard]):

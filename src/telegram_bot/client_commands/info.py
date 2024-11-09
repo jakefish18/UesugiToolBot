@@ -1,8 +1,8 @@
 import aiogram.utils.markdown as fmt
 from aiogram import Dispatcher, types
 
-from src.telegram_bot.init import bot
-from src.telegram_bot.keyboard_markups import kbm_main_menu
+from telegram_bot.init import bot
+from telegram_bot.keyboard_markups import kbm_main_menu
 
 INFO_RESPONSE_1 = fmt.text(
     fmt.text("👋 " + fmt.hbold("Приветствую") + "!"),
