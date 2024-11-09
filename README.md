@@ -58,4 +58,4 @@ python3 main2.py
 ```
 
 ## Fun fact
-It was planned to have website for the better management of learning collections, so there is frontend/ folder with some developments, but project is freezed now.
+It was planned to have website for the better management of the learning collections, so there is `frontend/` folder with some developments, but project is freezed now.
