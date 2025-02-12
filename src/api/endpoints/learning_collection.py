@@ -1,14 +1,7 @@
 """
 API requests with prefix /learning_collection.
 """
-from typing import Annotated
-
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
-from redis import Redis
-from sqlalchemy.orm import Session
-
-from core import security
-from crud import crud_access_token, crud_auth_token, crud_user
+from fastapi import APIRouter, Depends
 from models import User
 
 from .. import dependencies
@@ -16,7 +9,7 @@ from .. import dependencies
 router = APIRouter()
 
 
-@router.get("/get_all", description="Request to get all learning collections.")
+@router.get("/all", description="Request to get all learning collections.")
 async def get_all(*, user: User = Depends(dependencies.get_current_user)):
     """
     Getting all user learning collection.

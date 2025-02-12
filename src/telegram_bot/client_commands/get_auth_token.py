@@ -30,7 +30,7 @@ async def get_auth_token(query: types.CallbackQuery):
 
     await bot.send_message(
         user.telegram_id,
-        f"Ваш доступ: http://127.0.0.1:8000/user/auth?auth-token={auth_token}",
+        f"Ваш доступ: http://127.0.0.1:8000/auth/login?auth-token={auth_token}",
         reply_markup=kbm_main_menu,
     )
 
