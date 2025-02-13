@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import logoImage from "@/assets/logo.png"
+import { useUserStore } from "@/stores/user";
+import {onMounted} from "vue";
+
+const userStore = useUserStore();
+const user = userStore.user;
+
+onMounted(() => {
+  console.log("Fetching user");
+  const userStore = useUserStore();
+  userStore.fetchUser();
+})
 
 </script>
 
@@ -13,8 +24,11 @@ import logoImage from "@/assets/logo.png"
       <router-link to="/shop" class="link">Shop</router-link>
       <router-link to="/editor" class="link">Editor</router-link>
     </nav>
-    <div class="profile">
-      ID: ID
+    <div v-if="userStore.isLoggedIn" class="profile">
+      ID: {{ user.id }}
+    </div>
+    <div v-else class="profile">
+      ID: FAILED
     </div>
   </header>
 </template>

@@ -2,16 +2,9 @@
 API requests with prefix /user.
 There are function to deal with user: auth and etc.
 """
-from typing import Annotated
+from fastapi import APIRouter, Depends
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
-from fastapi.responses import RedirectResponse
-from redis import Redis
-from sqlalchemy.orm import Session
-
-from core import security
-from crud import crud_access_token, crud_auth_token, crud_user
-from models import AccessToken, User
+from models import User
 from schemas import UserOut
 
 from .. import dependencies

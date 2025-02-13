@@ -1,6 +1,7 @@
 <script scoped>
 import HeaderBar from "@/components/HeaderBar.vue";
-import {defineComponent} from "vue";
+import {defineComponent, onMounted} from "vue";
+import { useUserStore } from "@/stores/user";
 
 export default defineComponent({
   components: {HeaderBar}

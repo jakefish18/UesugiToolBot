@@ -50,7 +50,7 @@ async def auth_func(
     access_token = AccessToken(user_id=user.id, token=security.create_token())
     access_token: AccessToken = crud_access_token.create(db, access_token)
     response = RedirectResponse(url="http://127.0.0.1:3000/")
-    response.set_cookie("access_token", access_token.token, httponly=True, secure=True, samesite="Strict")
+    response.set_cookie("access_token", access_token.token, samesite="None", secure=False)
     return response
 
 
