@@ -13,15 +13,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="shop">
-    <LearningCollectionPreview v-for="learningCollection in learningCollections"
+  <div>
+    <div v-if="learningCollectionsStore.isLoaded" class="shop">
+      <LearningCollectionPreview v-for="learningCollection in learningCollections"
                                :key="learningCollection.id"
                                :id="learningCollection.id"
                                :name="learningCollection.name"
                                :owner-id="learningCollection.ownerId"
                                :number-of-cards="learningCollection.numberOfCards"
                                :number-of-downloads="learningCollection.numberOfDownloads"/>
+    </div>
+    <div v-else>
+      Loading...
+    </div>
   </div>
+
 </template>
 
 <style scoped>
@@ -31,5 +37,6 @@ onMounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 </style>

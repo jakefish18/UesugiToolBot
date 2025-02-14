@@ -4,6 +4,7 @@ import {getAllLearningCollections} from "@/api/leaningCollectionService";
 
 export const useLearningCollectionsStore = defineStore("learning_collection", {
     state: () => ({
+        isLoaded: false,
         learningCollections: [] as LearningCollectionPreview[],
     }),
 
@@ -15,6 +16,7 @@ export const useLearningCollectionsStore = defineStore("learning_collection", {
                 response.forEach((learningCollection) => {
                     this.learningCollections.push(learningCollection);
                 })
+                this.isLoaded = true;
             } catch (err) {
                 console.log("Learning collections weren't fetched");
             }

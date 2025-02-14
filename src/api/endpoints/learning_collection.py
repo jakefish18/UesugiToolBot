@@ -6,8 +6,9 @@ from sqlalchemy.orm import Session
 from fastapi_cache.decorator import cache
 
 from schemas import LearningCollectionPreview
+from models import User, UserLearningCollection
 from .. import dependencies
-from crud import crud_learning_collection
+from crud import crud_learning_collection, crud_user_learning_collection
 
 router = APIRouter()
 
