@@ -2,10 +2,11 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { UserProfile } from "@/types/user";
 import { getUserProfile } from "@/api/userService";
+import {reactive} from "vue";
 
 export const useUserStore = defineStore("user", {
     state: () => ({
-        user: {id: -1} as UserProfile,
+        id: -1,
         isLoggedIn: false
     }),
 
@@ -13,7 +14,7 @@ export const useUserStore = defineStore("user", {
         async fetchUser() {
             try {
                 const result = await getUserProfile();
-                this.user = result;
+                this.id = result.id;
                 this.isLoggedIn = true;
             } catch (err) {
                 console.log("User is not authorized, attempt failed.");

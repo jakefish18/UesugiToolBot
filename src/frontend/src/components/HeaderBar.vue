@@ -4,11 +4,9 @@ import { useUserStore } from "@/stores/user";
 import {onMounted} from "vue";
 
 const userStore = useUserStore();
-const user = userStore.user;
 
 onMounted(() => {
   console.log("Fetching user");
-  const userStore = useUserStore();
   userStore.fetchUser();
 })
 </script>
@@ -26,7 +24,7 @@ onMounted(() => {
       </ul>
     </nav>
     <div v-if="userStore.isLoggedIn" class="profile">
-      ID: {{ user.id }}
+      ID: {{ userStore.id }}
     </div>
     <div v-else class="profile">
       ID: FAILED
