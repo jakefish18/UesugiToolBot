@@ -21,8 +21,10 @@ onMounted(() => {
       <span class="site-name">UesugiToolHelper</span>
     </div>
     <nav>
-      <router-link to="/shop" class="link">Shop</router-link>
-      <router-link to="/editor" class="link">Editor</router-link>
+      <ul>
+        <li><router-link to="/shop" class="link">Shop</router-link></li>
+        <li><router-link to="/editor" class="link">Editor</router-link></li>
+      </ul>
     </nav>
     <div v-if="userStore.isLoggedIn" class="profile">
       ID: {{ user.id }}
@@ -34,6 +36,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
+header {
+  font-size: 16px;
+  color: white;
+}
+
 .logo {
   display: flex;
   flex-direction: row;
@@ -49,6 +56,29 @@ onMounted(() => {
   justify-content: right;
 }
 
+nav {
+  height: 100%;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+
+nav ul li {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+}
+
 .site-name {
   font-size: 24px;
   color: white;
@@ -59,15 +89,22 @@ onMounted(() => {
   height: 55px;
 }
 
-nav {
+.link {
+  text-decoration: none;
+  color: white;
+  height: 100%;
+  width: 100%;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
 }
 
-nav .link {
-  text-decoration: none;
+.link:hover {
+  background-color: #151E6F;
+}
+
+.link:active {
+  background-color: #232F95;
 }
 
 header {
