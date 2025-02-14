@@ -23,3 +23,13 @@ onMounted(() => {
                                :number-of-downloads="learningCollection.numberOfDownloads"/>
   </div>
 </template>
+
+<style scoped>
+.shop {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>
