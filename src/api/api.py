@@ -5,10 +5,20 @@ app: FastAPI - main variable for backend launching.
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis.asyncio import Redis
 
 from .endpoints import auth, learning_collection, user
 
 api = FastAPI()
+
+
+@api.on_event("startup")
+async def startup():
+    redis = Redis(host="localhost", port=6379, db=0)
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
 
 origins = [
     "http://localhost:3000",  # Vite (Vue 3) default dev server
@@ -29,3 +39,4 @@ api.add_middleware(
 api.include_router(auth.router, prefix="/auth", tags=["auth"])
 api.include_router(learning_collection.router, prefix="/learning_collections", tags=["learning_collection"])
 api.include_router(user.router, prefix="/users", tags=["user"])
+

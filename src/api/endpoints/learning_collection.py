@@ -2,30 +2,31 @@
 API requests with prefix /learning_collection.
 """
 from fastapi import APIRouter, Depends
-from models import User
+from sqlalchemy.orm import Session
+from fastapi_cache.decorator import cache
 
+from schemas import LearningCollectionPreview
 from .. import dependencies
+from crud import crud_learning_collection
 
 router = APIRouter()
 
 
 @router.get("/all", description="Request to get all learning collections.")
-async def get_all(*, user: User = Depends(dependencies.get_current_user)):
-    """
-    Getting all user learning collection.
+@cache(expire=120)
+async def get_all(db: Session = Depends(dependencies.get_db)) -> list[LearningCollectionPreview]:
+    learning_collections = crud_learning_collection.get_all(db)
+    results: list[LearningCollectionPreview] = []
 
-    Parameters:
-        db: Session - SQLAlchemy session to database, initializing in dependency injection.
-        redis: Redis - Redis session for caching, using to store access token with TTL.
-        user: User - dependency injection, which gets user access token from cookies.
-
-    Returns:
-        Json.
-    """
-    response_json = []
-    print(user.learning_collections)
-    for user_learning_collection in user.learning_collections:
-        response_json.append(
-            [user_learning_collection.learning_collection.id, user_learning_collection.learning_collection.name]
+    for learning_collection in learning_collections:
+        results.append(
+            LearningCollectionPreview(
+                id=learning_collection.id,
+                name=learning_collection.name,
+                owner_id=learning_collection.owner.id,
+                number_of_cards=len(learning_collection.cards),
+                number_of_downloads=len(learning_collection.users)
+            )
         )
-    return response_json
+
+    return results

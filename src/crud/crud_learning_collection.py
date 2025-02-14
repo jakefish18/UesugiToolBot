@@ -74,3 +74,6 @@ class CRUDLearningCollection(CRUDBase[LearningCollection]):
         db.commit()
         db.refresh(learning_collection)
         return learning_collection
+
+    def get_all(self, db: Session) -> list[LearningCollection]:
+        return db.query(LearningCollection).all()
