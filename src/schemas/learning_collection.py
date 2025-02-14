@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class LearningCollectionPreview(BaseModel):
-    id: int
+    id: int 
     name: str
-    owner_id: int
-    number_of_cards: int
-    number_of_downloads: int
+    owner_id: int = Field(..., alias="ownerId")
+    number_of_cards: int = Field(..., alias="numberOfCards")
+    number_of_downloads: int = Field(..., alias="numberOfDownloads")
