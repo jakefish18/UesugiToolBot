@@ -53,3 +53,18 @@ async def add_user_learning_collection(learning_collection_id: int, user: User =
     crud_user_learning_collection.create(db, new_user_learning_collection)
 
     return 201
+
+
+@router.delete("/me/learning_collections/{learning_collection_id}", description="Delete learning collection from user by id.")
+async def delete_user_learning_collection(learning_collection_id: int, user: User = Depends(dependencies.get_current_user), db: Session = Depends(dependencies.get_db)):
+    finded_learning_collection = crud_learning_collection.get(db, learning_collection_id)
+
+    if not finded_learning_collection:
+        return 404
+
+    user_learning_collection = crud_user_learning_collection.get(db, user, finded_learning_collection)
+    if user_learning_collection:
+        return 404
+    
+    crud_user_learning_collection.delete(user_learning_collection.id)
+    return 204
