@@ -10,3 +10,8 @@ export const postLearningCollection = async (learning_collection_id: number): Pr
     const response = await apiClient.post(`/users/me/learning_collections/${learning_collection_id}`);
     return response.status
 }
+
+export const deleteLearningCollection = async (learning_collection_id: number): Promise<number> => {
+    const response = await apiClient.delete(`/users/me/learning_collections/${learning_collection_id}`);
+    return response.status
+}

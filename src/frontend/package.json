@@ -35,6 +35,7 @@
   "eslintConfig": {
     "root": true,
     "env": {
+      "es2020": true,
       "node": true,
       "vue/setup-compiler-macros": true
     },

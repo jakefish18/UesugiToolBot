@@ -1,13 +1,33 @@
 <script setup lang="ts">
 import {LearningCollectionPreview} from "@/types/learningCollection";
 import learningCollectionImage from "@/assets/default_learning_collection_image.png";
-import {postLearningCollection} from "@/api/leaningCollectionService";
+import {useUserLearningCollectionsStore} from "@/stores/userLearningCollections";
+import {useLearningCollectionsStore} from "@/stores/storeLearningCollections";
+import {postLearningCollection, deleteLearningCollection} from "@/api/leaningCollectionService";
 
-const props =  defineProps<LearningCollectionPreview>();
+const userLearningCollectionsStore = useUserLearningCollectionsStore();
+const learningCollectionsStore = useLearningCollectionsStore();
+
+const props =  defineProps<{
+  id: bigint
+  name: string
+  ownerId: bigint
+  numberOfCards: bigint
+  numberOfDownloads: bigint
+  isUserContains: boolean
+}>();
 
 const addLearningCollection = (learningCollectionId: number) => {
   const result = postLearningCollection(learningCollectionId);
+  userLearningCollectionsStore.addUserLearningCollection(
+      learningCollectionsStore.getById(BigInt(learningCollectionId))
+  );
 };
+
+const removeLearningCollection = (learningCollectionId: number) => {
+  const result = deleteLearningCollection(learningCollectionId);
+  userLearningCollectionsStore.deleteUserLearningCollection(BigInt(learningCollectionId));
+}
 </script>
 
 <template>
@@ -19,7 +39,8 @@ const addLearningCollection = (learningCollectionId: number) => {
       <span>Number of cards: <span class="highlight">{{props.numberOfCards}}</span></span>
       <span>Number of downloads: <span class="highlight">{{props.numberOfDownloads}}</span></span>
     </div>
-    <button class="add-button" @click="postLearningCollection(props.id)">+</button>
+    <button v-if="!isUserContains" class="add-button" @click="addLearningCollection(props.id)">+</button>
+    <button v-else class="delete-button" @click="removeLearningCollection(props.id)">-</button>
   </div>
 </template>
 
@@ -43,6 +64,24 @@ const addLearningCollection = (learningCollectionId: number) => {
   background-color: #430ee8;
 }
 
+.delete-button {
+  border: none;
+  border-radius: 5px;
+  color: white;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #d10e2d;
+}
+
+.delete-button:hover {
+  background-color: #e10a21;
+}
+
+.delete-button:active {
+  background-color: #f60606;
+}
 
 .learning-collection-card {
   background-color: #08104E;

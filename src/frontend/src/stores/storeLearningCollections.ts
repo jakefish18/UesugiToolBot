@@ -20,6 +20,9 @@ export const useLearningCollectionsStore = defineStore("learning_collection", {
             } catch (err) {
                 console.log("Learning collections weren't fetched");
             }
+        },
+        getById(learningCollectionId: bigint): LearningCollectionPreview {
+            return this.learningCollections.find(learningCollection => learningCollection.id == learningCollectionId)!;
         }
     },
 })
