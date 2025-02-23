@@ -6,6 +6,17 @@ export const getAllLearningCollections = async (): Promise<LearningCollectionPre
     return response.data;
 }
 
+export const searchLearningCollections = async (query: string, limit: bigint, offset: bigint): Promise<LearningCollectionPreview[]> => {
+    const response = await apiClient.get<LearningCollectionPreview[]>("/learning_collections/search", {
+        params: {
+            query: query,
+            limit: limit,
+            offset: offset
+        }
+    });
+    return response.data;
+}
+
 export const postLearningCollection = async (learning_collection_id: number): Promise<number> => {
     const response = await apiClient.post(`/users/me/learning_collections/${learning_collection_id}`);
     return response.status

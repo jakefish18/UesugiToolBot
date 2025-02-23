@@ -3,7 +3,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.storage import FSMContext
 
 import cache_db
-from core import security
+from core import security, settings
 from crud import crud_auth_token, crud_user
 from db import SessionLocal
 from telegram_bot.init import bot
@@ -30,7 +30,7 @@ async def get_auth_token(query: types.CallbackQuery):
 
     await bot.send_message(
         user.telegram_id,
-        f"Ваш доступ: http://127.0.0.1:8000/auth/login?auth-token={auth_token}",
+        f"Ваш доступ: http://{settings.BACKEND_DOMAIN}/auth/login?auth-token={auth_token}",
         reply_markup=kbm_main_menu,
     )
 

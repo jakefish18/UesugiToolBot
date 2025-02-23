@@ -9,7 +9,7 @@ from fastapi.responses import RedirectResponse
 from redis import Redis
 from sqlalchemy.orm import Session
 
-from core import security
+from core import security, settings
 from crud import crud_access_token, crud_auth_token, crud_user
 from models import AccessToken
 
@@ -49,7 +49,7 @@ async def auth_func(
 
     access_token = AccessToken(user_id=user.id, token=security.create_token())
     access_token: AccessToken = crud_access_token.create(db, access_token)
-    response = RedirectResponse(url="http://127.0.0.1:3000/")
+    response = RedirectResponse(url=f"http://{settings.FRONTEND_DOMAIN}/#/shop")
     response.set_cookie("access_token", access_token.token, samesite="Lax", secure=False)
     return response
 

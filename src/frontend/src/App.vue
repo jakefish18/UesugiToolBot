@@ -11,7 +11,9 @@ export default defineComponent({
 
 <template>
   <HeaderBar></HeaderBar>
-  <router-view />
+  <div class="router-container">
+    <router-view/>
+  </div>
 </template>
 
 <style>

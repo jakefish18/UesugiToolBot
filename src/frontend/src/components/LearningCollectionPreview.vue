@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {LearningCollectionPreview} from "@/types/learningCollection";
+import BlueButton from "@/components/BlueButton.vue";
 import learningCollectionImage from "@/assets/default_learning_collection_image.png";
 import {useUserLearningCollectionsStore} from "@/stores/userLearningCollections";
 import {useLearningCollectionsStore} from "@/stores/storeLearningCollections";
@@ -39,29 +40,16 @@ const removeLearningCollection = (learningCollectionId: number) => {
       <span>Number of cards: <span class="highlight">{{props.numberOfCards}}</span></span>
       <span>Number of downloads: <span class="highlight">{{props.numberOfDownloads}}</span></span>
     </div>
-    <button v-if="!isUserContains" class="add-button" @click="addLearningCollection(props.id)">+</button>
+    <blue-button v-if="!isUserContains" class="add-button" @click="addLearningCollection(props.id)">+</blue-button>
     <button v-else class="delete-button" @click="removeLearningCollection(props.id)">-</button>
   </div>
 </template>
 
 <style scoped>
 .add-button {
-  border: none;
   border-radius: 5px;
-  color: white;
   width: 30px;
   height: 30px;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #3914AF;
-}
-
-.add-button:hover {
-  background-color: #4012ce;
-}
-
-.add-button:active {
-  background-color: #430ee8;
 }
 
 .delete-button {
@@ -85,13 +73,14 @@ const removeLearningCollection = (learningCollectionId: number) => {
 
 .learning-collection-card {
   background-color: #08104E;
+  box-sizing: border-box;
   width: 700px;
   height: 200px;
   border-radius: 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-left: 10px;
+  padding: 10px;
   gap: 20px;
 }
 

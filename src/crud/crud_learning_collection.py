@@ -75,5 +75,13 @@ class CRUDLearningCollection(CRUDBase[LearningCollection]):
         db.refresh(learning_collection)
         return learning_collection
 
-    def get_all(self, db: Session) -> list[LearningCollection]:
-        return db.query(LearningCollection).all()
+    def get_all_public(self, db: Session) -> list[LearningCollection]:
+        return db.query(LearningCollection).filter(LearningCollection.is_public).all()
+
+    def search_learning_collectoin(self, db: Session, query: str, limit: int, offset: int) -> list[LearningCollection]:
+        return db.query(LearningCollection).filter(
+            and_(
+                LearningCollection.name.ilike(f"%{query}%"),
+                LearningCollection.is_public
+            )
+        ).limit(limit).offset(offset).all()

@@ -4,6 +4,10 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 
 class Settings:
+    # Site settings.
+    FRONTEND_DOMAIN = "127.0.0.1:3000"
+    BACKEND_DOMAIN = "127.0.0.1:8000"
+
     # Bot settings.
     BOT_TOKEN = config["BOT_TOKEN"]
 
