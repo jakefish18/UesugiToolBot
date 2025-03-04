@@ -20,7 +20,7 @@ onMounted(() => {
   <div class="shop">
     <SearchInput/>
     <div v-if="learningCollectionsStore.isLoaded && userLearningCollectionsStore.isLoaded && learningCollections.length === 0" class="info-text">
-      No collection found  Loading... :(
+      No collection found :(
     </div>
     <div v-else-if="learningCollectionsStore.isLoaded && userLearningCollectionsStore.isLoaded" class="shop-items">
       <LearningCollectionPreview v-for="learningCollection in learningCollections"
